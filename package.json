@@ -1,0 +1,21 @@
+{
+  "name": "jquery-bootstrap-modal-steps",
+  "version": "0.0.0",
+  "description": "Lightweight step by step modal for bootstrap",
+  "main": "jquery-bootstrap-modal-steps.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jquery",
+    "bootstrap",
+    "modal-steps"
+  ],
+  "author": "Eduardo Orige",
+  "license": "MIT",
+  "devDependencies": {
+    "bootstrap": "^3.2.0",
+    "grunt": "^0.4.5",
+    "jquery": "^2.1.1"
+  }
+}
