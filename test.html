@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>jquery-bootstrap-modal-steps</title>
+
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.15.0.css">
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/qunit/qunit-1.15.0.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="jquery-bootstrap-modal-steps.js"></script>
+    <script>
+        QUnit.test('btnOptions', function(assert){
+            var $modal = $('#modal-filtros'),
+                $btnCancel = $modal.find('.js-btn-step[data-orientation=cancel]'),
+                $btnPrevious = $modal.find('.js-btn-step[data-orientation=previous]'),
+                $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
+                expectedCancel = 'Cancelar',
+                expectedPrevious = 'Voltar',
+                expectedNext = 'Proximo';
+
+            assert.equal($btnCancel.html(), '');
+            assert.equal($btnPrevious.html(), '');
+            assert.equal($btnNext.html(), '');
+
+            $modal.modalSteps({
+                btnCancelHtml: expectedCancel,
+                btnPreviousHtml: expectedPrevious,
+                btnNextHtml: expectedNext
+            });
+            $modal.modal('show');
+
+            assert.equal($btnCancel.html(), expectedCancel);
+            assert.equal($btnPrevious.html(), expectedPrevious);
+            assert.equal($btnNext.html(), expectedNext);
+        });
+
+        QUnit.test('btnCancel', function(assert){
+            /* Check if cancel button when triggered reset steps and buttons */
+            var $modal = $('#modal-filtros'),
+                $btnCancel = $modal.find('.js-btn-step[data-orientation=cancel]'),
+                $btnPrevious = $modal.find('.js-btn-step[data-orientation=previous]'),
+                $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
+                $actualStep;
+
+            $modal.modalSteps();
+            $modal.modal('show');
+            $actualStep = $modal.find('#actual-step');
+
+            assert.equal($actualStep.val(), '1');
+            $btnNext.trigger('click');
+
+            assert.equal($btnPrevious.attr('data-step'), '1');
+            assert.equal($actualStep.val(), '2');
+            // TODO: Next step must be 3, right?
+            // assert.equal($nextStep.val(), '3');
+
+            // TODO: asyncTests. Check buttons and inserts after hide modal.
+        });
+
+        QUnit.test('btnPrevious', function(assert){
+            expect(0);
+        });
+
+        QUnit.test('btnNext', function(assert){
+            expect(0);
+        });
+
+        QUnit.test('btnLastStep', function(assert){
+            expect(0);
+        });
+
+        QUnit.test('callbackOption', function(assert){
+            expect(0);
+        });
+
+        QUnit.test('checkTitle', function(assert){
+            expect(0);
+        });
+    </script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+        <div class="modal fade" role="dialog" aria-hidden="true" id="modal-filtros">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header steps-header">
+                        <h4 class="js-title-step"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row hide" data-step="1" data-title="Período de Atividade">
+                            <div class="jumbotron">Este é o passo 1</div>
+                        </div>
+
+                        <div class="row hide" data-step="2" data-title="Tipo de regra">
+                            <div class="jumbotron">Este é o passo 2</div>
+                        </div>
+
+                        <div class="row hide" data-step="3" data-title="Informações gerais sobre a regra">
+                            <div class="jumbotron">Este é o passo 3</div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer steps-footer">
+                        <button type="button" class="btn btn-default js-btn-step pull-left" data-orientation="cancel" data-dismiss="modal"></button>
+                        <button type="button" class="btn btn-warning js-btn-step" data-orientation="previous"></button>
+                        <button type="button" class="btn btn-success js-btn-step" data-orientation="next"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-sm btn-success" data-rel="modal" data-target="#modal-filtros">Run</button>
+    </div>
+
+    <script>
+        $('[data-rel=modal]').on('click', function(e){
+            var $modal = $($(this).attr('data-target'));
+            $modal.modal('show');
+        });
+    </script>
+    <!-- end: javascript -->
+</body>
+</html>
