@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>jquery-bootstrap-modal-steps</title>
+
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.15.0.css">
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/qunit/qunit-1.15.0.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="jquery-bootstrap-modal-steps.js"></script>
+    <script src="unit_tests.js"></script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+        <div class="modal fade" role="dialog" aria-hidden="true" id="modal-filtros">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header steps-header">
+                        <h4 class="js-title-step"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <span id="testCallback" style="display: none;">1</span>
+
+                        <div class="row hide" data-step="1" data-title="Período de Atividade">
+                            <div class="jumbotron">Este é o passo 1</div>
+                        </div>
+
+                        <div class="row hide" data-step="2" data-title="Tipo de regra">
+                            <div class="jumbotron">Este é o passo 2</div>
+                        </div>
+
+                        <div class="row hide" data-step="3" data-title="Informações gerais sobre a regra">
+                            <div class="jumbotron">Este é o passo 3</div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer steps-footer">
+                        <button type="button" class="btn btn-default js-btn-step pull-left" data-orientation="cancel" data-dismiss="modal"></button>
+                        <button type="button" class="btn btn-warning js-btn-step" data-orientation="previous"></button>
+                        <button type="button" class="btn btn-success js-btn-step" data-orientation="next"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-sm btn-success" data-rel="modal" data-target="#modal-filtros">Run</button>
+    </div>
+
+    <script>
+        // Just setting bootstrap modals
+        $('[data-rel=modal]').on('click', function(e){
+            var $modal = $($(this).attr('data-target'));
+            $modal.modal('show');
+        });
+    </script>
+</body>
+</html>

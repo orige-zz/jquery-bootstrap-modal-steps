@@ -13,8 +13,7 @@
 
         $modal
             .on('show.bs.modal', function(){
-                var $modal = $(this),
-                    $modalFooter = $modal.find('.modal-footer'),
+                var $modalFooter = $modal.find('.modal-footer'),
                     $btnCancel = $modalFooter.find('.js-btn-step[data-orientation=cancel]'),
                     $btnPrevious = $modalFooter.find('.js-btn-step[data-orientation=previous]'),
                     $btnNext = $modalFooter.find('.js-btn-step[data-orientation=next]'),
@@ -28,7 +27,7 @@
                 $btnCancel.html(settings.btnCancelHtml);
                 $btnPrevious.html(settings.btnPreviousHtml);
                 $btnNext.html(settings.btnNextHtml);
-                
+
                 $actualStep = $('<input>').attr({
                     'type': 'hidden',
                     'id': 'actual-step',
@@ -60,8 +59,7 @@
                     .append(' ' + titleStep);
             })
             .on('hidden.bs.modal', function(){
-                var $modal = $(this),
-                    $actualStep = $modal.find('#actual-step'),
+                var $actualStep = $modal.find('#actual-step'),
                     $btnNext = $modal.find('.js-btn-step[data-orientation=next]');
 
                 $modal
@@ -77,13 +75,11 @@
                     .attr('data-step', 1)
                     .html(settings.btnNextHtml);
 
-
                 $modal.find('.js-title-step').html('');
             });
 
         $modal.find('.js-btn-step').on('click', function(){
             var $btn = $(this),
-                $modal = $btn.closest('.modal'),
                 $actualStep = $modal.find('#actual-step'),
                 $btnPrevious = $modal.find('.js-btn-step[data-orientation=previous]'),
                 $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
