@@ -1,0 +1,42 @@
+{
+  "name": "jquery-bootstrap-modal-steps",
+  "version": "0.1.0",
+  "homepage": "https://github.com/orige/jquery-bootstrap-modal-steps",
+  "authors": [
+    "Eduardo Orige <eduardo.orige@gmail.com>"
+  ],
+  "description": "Lightweight step by step modal for bootstrap",
+  "main": [
+    "dist/jquery-bootstrap-modal-steps.js"
+  ],
+  "ignore": [
+    "*~",
+    "**/.*",
+    "*.log",
+    "*.pid",
+    "*.seed",
+    ".DS_Store",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "logs",
+    "pids",
+    "lib-cov",
+    "coverage",
+    ".grunt",
+    ".lock-wscript",
+    "build/Release"
+  ],
+  "keywords": [
+    "jquery",
+    "bootstrap",
+    "modals",
+    "modal"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.3.0"
+  },
+  "license": "MIT"
+}
