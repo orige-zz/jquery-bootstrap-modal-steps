@@ -1,3 +1,5 @@
+/* global jQuery */
+
 (function($){
     $.fn.modalSteps = function(options){
         var $modal = this;
@@ -12,17 +14,50 @@
             callbacks: {}
         }, options);
 
+
+        var validCallbacks = function(){
+            var everyStepCallback = settings.callbacks['*'];
+
+            if (everyStepCallback !== undefined && typeof(everyStepCallback) !== 'function'){
+                throw 'everyStepCallback is not a function! I need a function';
+            }
+
+            if (typeof(settings.completeCallback) !== 'function') {
+                throw 'completeCallback is not a function! I need a function';
+            }
+
+            for(var step in settings.callbacks){
+                if (settings.callbacks.hasOwnProperty(step)){
+                    var callback = settings.callbacks[step];
+
+                    if (step !== '*'){
+                        if (callback !== undefined && typeof(callback) !== 'function'){
+                            throw 'Step ' + step + ' callback must be a function';
+                        }
+                    }
+                }
+            }
+        };
+
         $modal
             .on('show.bs.modal', function(){
                 var $modalFooter = $modal.find('.modal-footer'),
                     $btnCancel = $modalFooter.find('.js-btn-step[data-orientation=cancel]'),
                     $btnPrevious = $modalFooter.find('.js-btn-step[data-orientation=previous]'),
                     $btnNext = $modalFooter.find('.js-btn-step[data-orientation=next]'),
+                    stepCallback = settings.callbacks['1'],
                     actualStep,
                     $actualStep,
                     titleStep,
                     $titleStepSpan,
                     nextStep;
+
+
+                validCallbacks();
+
+                if (stepCallback !== undefined && typeof(stepCallback) !== 'function'){
+                    stepCallback();
+                }
 
                 // Setting buttons
                 $btnCancel.html(settings.btnCancelHtml);
@@ -88,22 +123,12 @@
                 orientation = $btn.data('orientation'),
                 actualStep = parseInt($actualStep.val()),
                 everyStepCallback = settings.callbacks['*'],
-                stepCallback,
                 steps,
                 nextStep,
                 $nextStep,
                 newTitle;
 
             steps = $modal.find('div[data-step]').length;
-
-            // Checking callbacks
-            if (everyStepCallback !== undefined && typeof(everyStepCallback) !== 'function'){
-                throw 'everyStepCallback is not a function! I need a function';
-            }
-
-            if (typeof(settings.completeCallback) !== 'function') {
-                throw 'completeCallback is not a function! I need a function';
-            }
 
             // Executing everyStepCallback
             if (everyStepCallback !== undefined){
@@ -191,6 +216,12 @@
             $title
                 .html($titleStepSpan)
                 .append(' ' + newTitle);
+
+            // Execute callback of the actual step, if exists (duuh!)
+            var stepCallback = settings.callbacks[$actualStep.val()];
+            if (stepCallback !== undefined){
+                stepCallback();
+            }
         });
 
         return this;

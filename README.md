@@ -69,10 +69,8 @@ Note you don't need set nothing inside the **.js-btn-step**.
 
 You already have the modal, now you'll need activate it.
 
-```html
-<script>
-    $('#modal-sample').modalSteps();
-</script>
+```javascript
+$('#modal-sample').modalSteps();
 ```
 
 With this you can use steps with Bootstrap modals.
@@ -80,18 +78,56 @@ With this you can use steps with Bootstrap modals.
 **Don't forget that you need use a button to launch the Bootstrap modal**.
 You can see more of this [here](http://getbootstrap.com/javascript/#modals-usage)
 
-## Using a callback when user complete modal's steps
+## It's jQuery
+You can use jQuery functions after modalSteps because this is a jQuery plugin (haha):
+```javascript
+$('#modal-sample').modalSteps().find('#someDiv');
+```
+
+## Callbacks
+### Using a callback when user complete modal's steps
 You can set a callback when the user completes the modal steps.
 
-```html
-<script>
-    function callback(){
-        console.log('Congratulations!');
+```javascript
+var callback = function (){
+    console.log('Congratulations!');
+}
+$('#modal-sample').modalSteps({
+    completeCallback: callback
+});
+```
+
+### Callback for each step
+When you need valid forms in each modal step, it's cool a callback for this
+```javascript
+var callback = function (){
+    console.log('Each step Callback!');
+}
+$('#modal-sample').modalSteps({
+    callbacks: {
+        '*': callback
     }
-    $('#modal-sample').modalSteps({
-        completeCallback: callback
-    });
-</script>
+});
+```
+
+### Callback for a specific step
+Generally, you'll have a step pretty different of others and you must treat that.
+Use an specific callback for this. The key of the callback dictionary must be the step:
+```javascript
+var callback1 = function (){
+    console.log('A specific callback for step 1!');
+};
+
+var callback2 = function (){
+    console.log('A specific callback for step 2!');
+};
+
+$('#modal-sample').modalSteps({
+    callbacks: {
+        '1': callback1,
+        '2': callback2
+    }
+});
 ```
 
 ## Customize buttons
@@ -106,20 +142,20 @@ last|Complete
 
 ### How to replace?
 ```javascript
-    $('#modal-sample').modalSteps({
-        btnCancelHtml: 'Quit',
-        btnPreviousHtml: 'Back',
-        btnNextHtml: 'Go',
-        btnLastStepHtml: 'Finish'
-    });
+$('#modal-sample').modalSteps({
+    btnCancelHtml: 'Quit',
+    btnPreviousHtml: 'Back',
+    btnNextHtml: 'Go',
+    btnLastStepHtml: 'Finish'
+});
 ```
 
 ### Disabling next buttons
 For validations purposes, you can need block the next buttons:
 ```javascript
-    $('#modal-sample').modalSteps({
-        disableNextButton: true
-    });
+$('#modal-sample').modalSteps({
+    disableNextButton: true
+});
 ```
 
 *Sorry for my bad english :D* 

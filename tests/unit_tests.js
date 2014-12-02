@@ -1,3 +1,6 @@
+/* global QUnit */
+/* global $ */
+
 QUnit.test('btnOptions', function(assert){
     /* Check if default modalSteps and buttons customize modalSteps instance is ok */
     var $modal = $('#modal-filtros'),
@@ -58,7 +61,6 @@ QUnit.asyncTest('btnCancel', function(assert){
 
 QUnit.test('btnPrevious', function(assert){
     var $modal = $('#modal-filtros'),
-        $btnCancel = $modal.find('.js-btn-step[data-orientation=cancel]'),
         $btnPrevious = $modal.find('.js-btn-step[data-orientation=previous]'),
         $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
         $actualStep;
@@ -85,8 +87,6 @@ QUnit.test('btnPrevious', function(assert){
 
 QUnit.test('btnNext', function(assert){
     var $modal = $('#modal-filtros'),
-        $btnCancel = $modal.find('.js-btn-step[data-orientation=cancel]'),
-        $btnPrevious = $modal.find('.js-btn-step[data-orientation=previous]'),
         $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
         $actualStep;
 
@@ -102,8 +102,7 @@ QUnit.test('btnNext', function(assert){
 
 QUnit.test('btnLastStep', function(assert){
     var $modal = $('#modal-filtros'),
-        $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
-        $actualStep;
+        $btnNext = $modal.find('.js-btn-step[data-orientation=next]');
 
     $modal.modalSteps();
     $modal.modal('show');
@@ -144,11 +143,10 @@ QUnit.test('callbackOption', function(assert){
 
 QUnit.test('checkTitle', function(assert){
     var $modal = $('#modal-filtros'),
-        $btnPrevious = $modal.find('.js-btn-step[data-orientation=previous]'),
         $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
         steps = $modal.find('div[data-step]').length,
-        $step,
-        $span;
+        testString,
+        $step;
 
     $modal.modalSteps();
     $modal.modal('show');
@@ -175,9 +173,9 @@ QUnit.test('everyStepCallback', function(assert){
         $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
         steps = $modal.find('div[data-step]').length,
         stepForward = 1,
-        $step;
+        callback;
 
-    var callback = function(){
+    callback = function(){
         var valor = parseInt($('#testCallback').html()) + 1;
         $('#testCallback').html(valor);
     };
@@ -195,4 +193,61 @@ QUnit.test('everyStepCallback', function(assert){
         $btnNext.trigger('click');
         assert.equal($('#testCallback').html(), stepForward.toString());
     }
+
+    for (step=stepForward; step > 1; step--){
+        $btnPrevious.trigger('click');
+        stepForward += 1;
+        assert.equal($('#testCallback').html(), stepForward.toString());
+    }
+});
+
+QUnit.test('stepCallback', function(assert){
+    var $modal = $('#modal-filtros'),
+        $btnPrevious = $modal.find('.js-btn-step[data-orientation=previous]'),
+        $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
+        callback;
+
+    callback = function(){
+        $('#testCallback').html('callback 2');
+    };
+
+    $modal.modalSteps({
+        callbacks: {
+            '1': function(){ $('#testCallback').html('callback 1'); },
+            '2': function(){ $('#testCallback').html('callback 2'); },
+            '3': function(){ $('#testCallback').html('callback 3'); }
+        }
+    }).modal('show');
+
+    $btnNext.trigger('click');
+    assert.equal($('#testCallback').html(), 'callback 2');
+
+    $btnPrevious.trigger('click');
+    assert.equal($('#testCallback').html(), 'callback 1');
+});
+
+QUnit.test('invalidStepCallback', function(assert){
+    var $modal = $('#modal-filtros');
+
+    assert.throws(
+        function(){
+            $modal.modalSteps({
+                'callbacks': { '1': 'error' }
+            }).modal('show');
+        },
+        'Step 1 callback must be a function'
+    );
+});
+
+QUnit.test('invalidEveryStepCallback', function(assert){
+    var $modal = $('#modal-filtros');
+
+    assert.throws(
+        function(){
+            $modal.modalSteps({
+                'callbacks': { '*': 'error' }
+            }).modal('show');
+        },
+        'Every step callback must be a function'
+    );
 });
