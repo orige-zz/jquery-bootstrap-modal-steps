@@ -162,3 +162,37 @@ QUnit.test('checkTitle', function(assert){
         $btnNext.trigger('click');
     }
 });
+
+QUnit.test('chaining', function(assert){
+    var $modal = $('#modal-filtros'),
+        steps = $modal.find('div[data-step]').length;
+    assert.equal($modal.modalSteps().find('div[data-step]').length, steps);
+});
+
+QUnit.test('everyStepCallback', function(assert){
+    var $modal = $('#modal-filtros'),
+        $btnPrevious = $modal.find('.js-btn-step[data-orientation=previous]'),
+        $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
+        steps = $modal.find('div[data-step]').length,
+        stepForward = 1,
+        $step;
+
+    var callback = function(){
+        var valor = parseInt($('#testCallback').html()) + 1;
+        $('#testCallback').html(valor);
+    };
+
+    $modal.modalSteps({
+        callbacks: {
+            '*': callback
+        }
+    }).modal('show');
+
+    for (var step=1; step < steps; step++){
+        stepForward += 1;
+
+        assert.equal($('#testCallback').html(), step.toString());
+        $btnNext.trigger('click');
+        assert.equal($('#testCallback').html(), stepForward.toString());
+    }
+});

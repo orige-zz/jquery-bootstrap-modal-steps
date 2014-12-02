@@ -8,7 +8,8 @@
             btnNextHtml: 'Next',
             btnLastStepHtml: 'Complete',
             disableNextButton: false,
-            completeCallback: function(){}
+            completeCallback: function(){},
+            callbacks: {}
         }, options);
 
         $modal
@@ -86,12 +87,28 @@
                 $title = $modal.find('.js-title-step'),
                 orientation = $btn.data('orientation'),
                 actualStep = parseInt($actualStep.val()),
+                everyStepCallback = settings.callbacks['*'],
+                stepCallback,
                 steps,
                 nextStep,
                 $nextStep,
                 newTitle;
 
             steps = $modal.find('div[data-step]').length;
+
+            // Checking callbacks
+            if (everyStepCallback !== undefined && typeof(everyStepCallback) !== 'function'){
+                throw 'everyStepCallback is not a function! I need a function';
+            }
+
+            if (typeof(settings.completeCallback) !== 'function') {
+                throw 'completeCallback is not a function! I need a function';
+            }
+
+            // Executing everyStepCallback
+            if (everyStepCallback !== undefined){
+                everyStepCallback();
+            }
 
             // Callback on Complete
             if ($btn.attr('data-step') === 'complete'){
@@ -175,5 +192,7 @@
                 .html($titleStepSpan)
                 .append(' ' + newTitle);
         });
+
+        return this;
     };
 }(jQuery));
