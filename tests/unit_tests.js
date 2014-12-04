@@ -3,7 +3,7 @@
 
 QUnit.test('btnOptions', function(assert){
     /* Check if default modalSteps and buttons customize modalSteps instance is ok */
-    var $modal = $('#modal-filtros'),
+    var $modal = $('#modal-steps'),
         $btnCancel = $modal.find('.js-btn-step[data-orientation=cancel]'),
         $btnPrevious = $modal.find('.js-btn-step[data-orientation=previous]'),
         $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
@@ -29,7 +29,7 @@ QUnit.test('btnOptions', function(assert){
 
 QUnit.asyncTest('btnCancel', function(assert){
     /* Check if cancel button when triggered reset steps and buttons */
-    var $modal = $('#modal-filtros'),
+    var $modal = $('#modal-steps'),
         $btnCancel = $modal.find('.js-btn-step[data-orientation=cancel]'),
         $btnPrevious = $modal.find('.js-btn-step[data-orientation=previous]'),
         $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
@@ -60,7 +60,7 @@ QUnit.asyncTest('btnCancel', function(assert){
 });
 
 QUnit.test('btnPrevious', function(assert){
-    var $modal = $('#modal-filtros'),
+    var $modal = $('#modal-steps'),
         $btnPrevious = $modal.find('.js-btn-step[data-orientation=previous]'),
         $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
         $actualStep;
@@ -86,7 +86,7 @@ QUnit.test('btnPrevious', function(assert){
 });
 
 QUnit.test('btnNext', function(assert){
-    var $modal = $('#modal-filtros'),
+    var $modal = $('#modal-steps'),
         $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
         $actualStep;
 
@@ -101,7 +101,7 @@ QUnit.test('btnNext', function(assert){
 });
 
 QUnit.test('btnLastStep', function(assert){
-    var $modal = $('#modal-filtros'),
+    var $modal = $('#modal-steps'),
         $btnNext = $modal.find('.js-btn-step[data-orientation=next]');
 
     $modal.modalSteps();
@@ -117,7 +117,7 @@ QUnit.test('btnLastStep', function(assert){
 });
 
 QUnit.test('callbackOption', function(assert){
-    var $modal = $('#modal-filtros'),
+    var $modal = $('#modal-steps'),
         $btnNext = $modal.find('.js-btn-step[data-orientation=next]');
 
     var callback = function(){
@@ -142,7 +142,7 @@ QUnit.test('callbackOption', function(assert){
 });
 
 QUnit.test('checkTitle', function(assert){
-    var $modal = $('#modal-filtros'),
+    var $modal = $('#modal-steps'),
         $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
         steps = $modal.find('div[data-step]').length,
         testString,
@@ -162,13 +162,17 @@ QUnit.test('checkTitle', function(assert){
 });
 
 QUnit.test('chaining', function(assert){
-    var $modal = $('#modal-filtros'),
+    var $modal = $('#modal-steps'),
         steps = $modal.find('div[data-step]').length;
     assert.equal($modal.modalSteps().find('div[data-step]').length, steps);
 });
 
 QUnit.test('everyStepCallback', function(assert){
-    var $modal = $('#modal-filtros'),
+    /*
+     * A callback is executed when the modal shows up and when
+     * a new step appeared.
+     */
+    var $modal = $('#modal-steps'),
         $btnPrevious = $modal.find('.js-btn-step[data-orientation=previous]'),
         $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
         steps = $modal.find('div[data-step]').length,
@@ -189,20 +193,20 @@ QUnit.test('everyStepCallback', function(assert){
     for (var step=1; step < steps; step++){
         stepForward += 1;
 
-        assert.equal($('#testCallback').html(), step.toString());
+        assert.equal($('#testCallback').html(), stepForward);
         $btnNext.trigger('click');
-        assert.equal($('#testCallback').html(), stepForward.toString());
+        assert.equal($('#testCallback').html(), stepForward + 1);
     }
 
     for (step=stepForward; step > 1; step--){
         $btnPrevious.trigger('click');
         stepForward += 1;
-        assert.equal($('#testCallback').html(), stepForward.toString());
+        assert.equal($('#testCallback').html(), stepForward + 1);
     }
 });
 
 QUnit.test('stepCallback', function(assert){
-    var $modal = $('#modal-filtros'),
+    var $modal = $('#modal-steps'),
         $btnPrevious = $modal.find('.js-btn-step[data-orientation=previous]'),
         $btnNext = $modal.find('.js-btn-step[data-orientation=next]'),
         callback;
@@ -227,7 +231,7 @@ QUnit.test('stepCallback', function(assert){
 });
 
 QUnit.test('invalidStepCallback', function(assert){
-    var $modal = $('#modal-filtros');
+    var $modal = $('#modal-steps');
 
     assert.throws(
         function(){
@@ -240,7 +244,7 @@ QUnit.test('invalidStepCallback', function(assert){
 });
 
 QUnit.test('invalidEveryStepCallback', function(assert){
-    var $modal = $('#modal-filtros');
+    var $modal = $('#modal-steps');
 
     assert.throws(
         function(){

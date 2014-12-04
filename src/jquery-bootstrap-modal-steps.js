@@ -1,6 +1,8 @@
 /* global jQuery */
 
 (function($){
+    'use strict';
+
     $.fn.modalSteps = function(options){
         var $modal = this;
 
@@ -30,13 +32,19 @@
                 if (settings.callbacks.hasOwnProperty(step)){
                     var callback = settings.callbacks[step];
 
-                    if (step !== '*'){
-                        if (callback !== undefined && typeof(callback) !== 'function'){
-                            throw 'Step ' + step + ' callback must be a function';
-                        }
+                    if (step !== '*' && callback !== undefined && typeof(callback) !== 'function'){
+                        throw 'Step ' + step + ' callback must be a function';
                     }
                 }
             }
+        };
+
+        var executeCallback = function(callback){
+            if (callback !== undefined && typeof(callback) === 'function'){
+                callback();
+                return true;
+            }
+            return false;
         };
 
         $modal
@@ -45,6 +53,7 @@
                     $btnCancel = $modalFooter.find('.js-btn-step[data-orientation=cancel]'),
                     $btnPrevious = $modalFooter.find('.js-btn-step[data-orientation=previous]'),
                     $btnNext = $modalFooter.find('.js-btn-step[data-orientation=next]'),
+                    everyStepCallback = settings.callbacks['*'],
                     stepCallback = settings.callbacks['1'],
                     actualStep,
                     $actualStep,
@@ -52,12 +61,14 @@
                     $titleStepSpan,
                     nextStep;
 
+                if (settings.disableNextButton){
+                    $btnNext.attr('disabled', 'disabled');
+                }
+                $btnPrevious.attr('disabled', 'disabled');
 
                 validCallbacks();
-
-                if (stepCallback !== undefined && typeof(stepCallback) !== 'function'){
-                    stepCallback();
-                }
+                executeCallback(everyStepCallback);
+                executeCallback(stepCallback);
 
                 // Setting buttons
                 $btnCancel.html(settings.btnCancelHtml);
@@ -72,11 +83,6 @@
 
                 $modal.find('#actual-step').remove();
                 $modal.append($actualStep);
-
-                if (settings.disableNextButton){
-                    $btnNext.attr('disabled', 'disabled');
-                }
-                $btnPrevious.attr('disabled', 'disabled');
 
                 actualStep = 1;
                 nextStep = actualStep + 1;
@@ -129,11 +135,6 @@
                 newTitle;
 
             steps = $modal.find('div[data-step]').length;
-
-            // Executing everyStepCallback
-            if (everyStepCallback !== undefined){
-                everyStepCallback();
-            }
 
             // Callback on Complete
             if ($btn.attr('data-step') === 'complete'){
@@ -217,11 +218,9 @@
                 .html($titleStepSpan)
                 .append(' ' + newTitle);
 
-            // Execute callback of the actual step, if exists (duuh!)
             var stepCallback = settings.callbacks[$actualStep.val()];
-            if (stepCallback !== undefined){
-                stepCallback();
-            }
+            executeCallback(everyStepCallback);
+            executeCallback(stepCallback);
         });
 
         return this;

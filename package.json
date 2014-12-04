@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap-modal-steps",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Lightweight step by step modal for bootstrap",
   "main": "jquery-bootstrap-modal-steps.js",
   "scripts": {
