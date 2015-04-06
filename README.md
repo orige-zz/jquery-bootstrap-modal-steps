@@ -158,4 +158,6 @@ $('#modal-sample').modalSteps({
 });
 ```
 
+**You can see more examples in samples directory**
+
 *Sorry for my bad english :D* 
